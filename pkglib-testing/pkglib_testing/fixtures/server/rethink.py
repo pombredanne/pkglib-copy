@@ -98,6 +98,18 @@ def rethink_empty_db(request, rethink_module_db, rethink_make_tables):
 
         This is a useful approach, because of the long time taken to
         create a new RethinkDB table, compared to the time to empty one.
+        From these approximate benchmarks, you can see the difference:
+
+        RethinkDB, to make a table:            0.800 s
+
+        Insert 100 records 1-by-1:             0.150 s
+        Insert 1000 records 1-by-1:            1.550 s
+        Insert 1000 records in bulk from list: 0.030 s
+        Insert 1000 records in bulk from gen:  0.001 s
+
+        Delete 100 records:                    0.010 s
+        Delete 1000 records:                   0.050 s
+        Delete 1000 records:                   0.050 s
     """
     tables_to_emptied = (table[0] for table
                          in getattr(request.module, 'FIXTURE_TABLES'))
